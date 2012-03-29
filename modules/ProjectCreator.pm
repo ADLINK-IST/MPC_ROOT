@@ -229,6 +229,7 @@ my %csvc = ('source_files'        => [ "\\.cs" ],
             'ico_files'           => [ "\\.ico" ],
             'documentation_files' => [ "README", "readme", "\\.doc", "\\.txt", "\\.html" ],
             'embedded_resource_files' => [],
+            'header_files' => [], ## This is a hack
            );
 
 my %csma = ('source_files' => [ 'dependent_upon',
@@ -1360,8 +1361,11 @@ sub process_component_line {
       my $key = $line;
       $key =~ s/\\/\//g if ($self->{'convert_slashes'});
       my $cmdflags = $$flags{'commandflags'};
-      my $add_out = $cmdHelper->get_output($key, $cmdflags);
-      push(@{$self->{'custom_special_output'}->{$tag}->{$key}}, @$add_out);
+      ##print "Calling from point 2\n";
+      ##my $add_out = $cmdHelper->get_output($key, $cmdflags);
+      ##push(@{$self->{'custom_special_output'}->{$tag}->{$key}}, @$add_out);
+      ##my %hash   = map { $_, 1 } @{$self->{'custom_special_output'}->{$tag}->{$key}};
+      ##@{$self->{'custom_special_output'}->{$tag}->{$key}} = keys %hash;
     }
 
     ## Set up the files array.  If the line contains a wild card
@@ -3050,7 +3054,6 @@ sub correct_generated_files {
           my $part = $self->remove_wanted_extension(
                         $input,
                         $self->{'valid_components'}->{$gentype});
-
           my @files = $self->generated_filenames($part, $gentype,
                                                  $tag, $input);
           if (defined $copy[0]) {
@@ -3250,6 +3253,8 @@ sub generate_default_components {
                   my $add_out = $cmdHelper->get_output($file, $flags);
                   push(@{$self->{'custom_special_output'}->{$tag}->{$file}},
                        @$add_out);
+                  my %hash   = map { $_, 1 } @{$self->{'custom_special_output'}->{$tag}->{$file}};
+                  @{$self->{'custom_special_output'}->{$tag}->{$file}} = keys %hash;
                 }
               }
             }
@@ -3449,7 +3454,7 @@ sub list_generated_file {
       ## $gentype and, as far as I can tell, $created will always be
       ## longer or of the same length of $file.  It doesn't really
       ## matter if $file contains a '.' or not.
-      if (index($created, $file) != -1) {
+      if ((index($created, "$file.") != -1) || ($file eq $created)) {
         if (defined $ofile) {
           $created = $self->prepend_gendir($created, $ofile, $gentype);
         }
@@ -3457,7 +3462,9 @@ sub list_generated_file {
           push(@$array, $created);
           ++$count;
         }
-        last;
+        if (!($created eq $file)) {
+            last;
+        }
       }
     }
   }

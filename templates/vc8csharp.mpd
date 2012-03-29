@@ -1,4 +1,4 @@
-﻿<%if(xmlheader)%><?xml version="1.0" encoding="utf-8"?>
+<%if(xmlheader)%><?xml version="1.0" encoding="utf-8"?>
 <%endif%><Project<%if(toolsversion)%> ToolsVersion="<%toolsversion%>"<%endif%> DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <ProjectType>Local</ProjectType>
@@ -170,15 +170,16 @@
 <%endif%>
 <%endif%>
 <%endfor%>
+<%foreach(template_files)%>
+    <Compile Include="<%template_file%>">
+<%if(flag_overrides(template_file, dependent_upon))%>
+      <DependentUpon><%flag_overrides(template_file, dependent_upon)%></DependentUpon>
+<%endif%>
+    </Compile>
+<%endfor%>
 <%foreach(custom_types)%>
 <%foreach(custom_type->input_files)%>
-<%if(custom_type->input_file->output_files)%>
-    <Compile Include="<%custom_type->input_file%>">
-      <Generator><%if(custom_type->libpath)%>PATH=%PATH%;<%custom_type->libpath%>&#x0D;&#x0A;<%endif%><%if(flag_overrides(custom_type->input_file, gendir))%>if not exist <%flag_overrides(custom_type->input_file, gendir)%> mkdir <%flag_overrides(custom_type->input_file, gendir)%>&#x0D;&#x0A;<%endif%><%if(flag_overrides(custom_type->input_file, command))%><%flag_overrides(custom_type->input_file, command)%><%else%><%custom_type->command%><%endif%> <%if(flag_overrides(custom_type->input_file, commandflags))%><%flag_overrides(custom_type->input_file, commandflags)%><%else%><%custom_type->commandflags%><%endif%> <%if(custom_type->output_option)%><%custom_type->input_file%> <%custom_type->output_option%> <%if(flag_overrides(custom_type->input_file, gendir))%><%flag_overrides(custom_type->input_file, gendir)%>\<%basename(custom_type->input_file->output_files)%><%else%><%custom_type->input_file->output_files%><%endif%><%else%><%custom_type->input_file%><%endif%><%if(flag_overrides(custom_type->input_file, postcommand))%><%foreach(custom_type->input_file)%>&amp;&amp;<%flag_overrides(custom_type->input_file, postcommand)%><%endfor%><%else%><%if(custom_type->postcommand)%><%foreach(custom_type->input_file)%>&amp;&amp;<%custom_type->postcommand%><%endfor%><%endif%><%endif%></Generator>
-    </Compile>
-<%else%>
     <None Include="<%custom_type->input_file%>" />
-<%endif%>
 <%endfor%>
 <%endfor%>
 <%foreach(resx_files)%>
@@ -225,7 +226,17 @@
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PreBuildEvent><%if(prebuild)%><%eval(prebuild)%><%endif%></PreBuildEvent>
+    <PreBuildEvent>
+<%if(prebuild)%><%eval(prebuild)%>;<%endif%>
+<%foreach(custom_types)%>
+cd $(ProjectDir)
+<%foreach(custom_type->input_files)%>
+<%if(custom_type->input_file->output_files)%>
+<%if(custom_type->libpath)%>PATH=%PATH%;<%custom_type->libpath%>&#x0D;&#x0A;<%endif%><%if(flag_overrides(custom_type->input_file, gendir))%>if not exist <%flag_overrides(custom_type->input_file, gendir)%> mkdir <%flag_overrides(custom_type->input_file, gendir)%>&#x0D;&#x0A;<%endif%><%if(flag_overrides(custom_type->input_file, command))%><%flag_overrides(custom_type->input_file, command)%><%else%><%custom_type->command%><%endif%> <%if(flag_overrides(custom_type->input_file, commandflags))%><%flag_overrides(custom_type->input_file, commandflags)%><%else%><%custom_type->commandflags%><%endif%> <%if(custom_type->output_option)%><%custom_type->input_file%> <%custom_type->output_option%> <%if(flag_overrides(custom_type->input_file, gendir))%><%flag_overrides(custom_type->input_file, gendir)%>\<%basename(custom_type->input_file->output_files)%><%else%><%custom_type->input_file->output_files%><%endif%><%else%><%custom_type->input_file%><%endif%><%if(flag_overrides(custom_type->input_file, postcommand))%><%foreach(custom_type->input_file)%>&amp;&amp;<%flag_overrides(custom_type->input_file, postcommand)%><%endfor%><%else%><%if(custom_type->postcommand)%><%foreach(custom_type->input_file)%>&amp;&amp;<%custom_type->postcommand%><%endfor%><%endif%><%endif%>
+<%endif%>
+<%endfor%>
+<%endfor%>
+    </PreBuildEvent>
     <PostBuildEvent><%if(postbuild)%><%eval(postbuild)%><%endif%></PostBuildEvent>
   </PropertyGroup>
 </Project>

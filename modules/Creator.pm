@@ -1288,7 +1288,7 @@ sub get_secondary_relative_values {
 
 sub convert_all_variables {
   #my $self = shift;
-  return 0;
+  return 1;
 }
 
 
