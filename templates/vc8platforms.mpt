@@ -91,7 +91,7 @@ WinCE-GS3Target (ARMV4I) {
   unicode          = 1
   output_subdir    = WinCE_GS3Target_ARMV4I
   cpu_defines      = $(ARCHFAM) $(_ARCHFAM_)
-  platform_defines = UNDER_CE=$(CEVER) _WIN32_WCE=$(CEVER) WINCE $(PLATFORMDEFINES) _WINDOWS _UNICODE UNICODE
+  platform_defines = UNDER_CE=$(CEVER) _WIN32_WCE=$(CEVER) WINCE _WINDOWS _UNICODE UNICODE
   link_options     = /subsystem:windowsce,6.0
   lit_libs        += iphlpapi
   subsystem        = "0"
