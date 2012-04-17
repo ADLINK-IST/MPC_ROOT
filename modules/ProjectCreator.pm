@@ -3444,6 +3444,13 @@ sub list_generated_file {
     ## added to the project.
     $gen =~ s/\.[^\.]+$// if ($gen eq $input);
 
+    ## @todo Hacking this in for now. We end up here with $gen = ../. (???)
+    ## This ends up adding '.' to generic suffixes and making spurious
+    ## files like .Dcps.idl. Bail by rejecting 'files' that are nothing but '.' & '/'
+    if ($gen =~ /^[\.\/]+$/) {
+        next;
+    }
+
     ## See if we need to add the file.  We always need to check since the
     ## output file may have absolutely nothing in common with the input
     ## file.
