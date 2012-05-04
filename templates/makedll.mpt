@@ -66,6 +66,7 @@ java {
   ar             = jar
   arflags        = cvf
   platforms      = jvm
+  genflags       =
 }
 
 gcj {

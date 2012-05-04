@@ -104,7 +104,7 @@ EXESUFFIX     = <%lib_modifier%>
 <%endif%>
 GENFLAGS      =<%if(!contains(configuration, Release) || optimize)%> <%genflags%><%endif%>
 LDLIBS        =<%foreach(libs)%> <%libopt%>"<%libname_prefix%><%lib%>$(LIBSUFFIX)"<%endfor%><%foreach(lit_libs)%> <%libopt%>"<%lit_lib%>"<%endfor%><%foreach(pure_libs)%> "<%pure_lib%>"<%endfor%> <%ldlibs%>
-OBJS          =<%if(pch_source && pchsupport)%> <%targetoutdir%><%obj_dir%><%noextension(pch_source)%>$(OBJEXT)<%endif%><%foreach(source_files)%> <%targetoutdir%><%obj_dir%><%noextension(source_file)%>$(OBJEXT)<%endfor%><%if(rc)%><%foreach(resource_files)%> <%targetoutdir%><%obj_dir%><%resource_file%>$(RESEXT)<%endfor%><%endif%>
+OBJS          =<%if(pch_source && pchsupport)%> <%targetoutdir%><%obj_dir%><%basenoextension(pch_source)%>$(OBJEXT)<%endif%><%foreach(source_files)%> <%targetoutdir%><%obj_dir%><%basenoextension(source_file)%>$(OBJEXT)<%endfor%><%if(rc)%><%foreach(resource_files)%> <%targetoutdir%><%obj_dir%><%resource_file%>$(RESEXT)<%endfor%><%endif%>
 <%if(lib_ext)%>
 <%if(staticname)%>
 AREXT         = <%lib_ext%>
@@ -196,7 +196,7 @@ $(SHLIB)<%if(version && versupport)%>.<%version%><%endif%>: <%if(tempinc)%>$(TEM
 	<%eval(prelink)%>
 <%endif%>
 <%if(dmclink)%>
-	link /impl <%if(pch_source && pchsupport)%><%targetoutdir%><%obj_dir%><%noextension(pch_source)%>$(OBJEXT)+<%endif%><%foreach(source_files)%><%targetoutdir%><%obj_dir%><%noextension(source_file)%>$(OBJEXT)<%fornotlast("+")%><%endfor%>,$@,<%ldlibs%><%if(rc)%><%foreach(resource_files)%><%forfirst(",,")%><%targetoutdir%><%obj_dir%><%resource_file%>$(RESEXT)<%fornotlast("+")%><%endfor%><%endif%>
+	link /impl <%if(pch_source && pchsupport)%><%targetoutdir%><%obj_dir%><%basenoextension(pch_source)%>$(OBJEXT)+<%endif%><%foreach(source_files)%><%targetoutdir%><%obj_dir%><%basenoextension(source_file)%>$(OBJEXT)<%fornotlast("+")%><%endfor%>,$@,<%ldlibs%><%if(rc)%><%foreach(resource_files)%><%forfirst(",,")%><%targetoutdir%><%obj_dir%><%resource_file%>$(RESEXT)<%fornotlast("+")%><%endfor%><%endif%>
 <%else%>
 	$(LINK.cc) $(SHFLAGS) $(OBJS) $(LDLIBS) $(OUTPUT_OPTION)
 <%endif%>
@@ -282,20 +282,20 @@ $(TEMPINCDIR):
 
 <%endif%>
 <%if(pch_source && pchsupport)%>
-<%targetoutdir%><%obj_dir%><%noextension(pch_source)%>$(OBJEXT): <%pch_source%>
+<%targetoutdir%><%obj_dir%><%basenoextension(pch_source)%>$(OBJEXT): <%pch_source%>
 <%if(targetoutdir || obj_dir)%>
-	@$(TESTDIRSTART) "<%targetoutdir%><%obj_dir%><%dirname(pch_source)%>" $(TESTDIREND) $(MKDIR) "<%targetoutdir%><%obj_dir%><%dirname(pch_source)%>"
+	@$(TESTDIRSTART) "<%targetoutdir%><%obj_dir%>" $(TESTDIREND) $(MKDIR) "<%targetoutdir%><%obj_dir%>"
 <%endif%>
 	<%if(ends_with(pch_source, \.c))%>$(COMPILE.c)<%else%>$(COMPILE.cc)<%endif%> <%if(pchcreate)%><%pchcreate%><%targetoutdir%><%obj_dir%><%pch_header%><%pchext%> <%endif%>$(EXPORTFLAGS)<%if(!pchnobj)%> $(OUTPUT_OPTION)<%endif%> <%pch_source%>
 <%if(pchnobj)%>
-	@$(CP) <%targetoutdir%><%obj_dir%><%pch_header%><%pchext%> <%targetoutdir%><%obj_dir%><%noextension(pch_source)%>$(OBJEXT)
+	@$(CP) <%targetoutdir%><%obj_dir%><%pch_header%><%pchext%> <%targetoutdir%><%obj_dir%><%basenoextension(pch_source)%>$(OBJEXT)
 <%endif%>
 
 <%endif%>
 <%foreach(source_files)%>
-<%targetoutdir%><%obj_dir%><%noextension(source_file)%>$(OBJEXT): <%source_file%>
+<%targetoutdir%><%obj_dir%><%basenoextension(source_file)%>$(OBJEXT): <%source_file%>
 <%if(targetoutdir || obj_dir)%>
-	@$(TESTDIRSTART) "<%targetoutdir%><%obj_dir%><%dirname(source_file)%>" $(TESTDIREND) $(MKDIR) "<%targetoutdir%><%obj_dir%><%dirname(source_file)%>"
+	@$(TESTDIRSTART) "<%targetoutdir%><%obj_dir%>" $(TESTDIREND) $(MKDIR) "<%targetoutdir%><%obj_dir%>"
 <%endif%>
 	<%if(ends_with(source_file, \.c) || ends_with(source_file, \.[Ss]))%>$(COMPILE.c)<%else%>$(COMPILE.cc)<%endif%> <%if(flag_overrides(source_file, buildflags))%><%flag_overrides(source_file, buildflags)%> <%endif%><%if(pchuse && pch_source && pchsupport)%><%pchuse%><%pch_header%><%pchext%> <%if(pchstop)%><%pchstop%><%pch_header%><%endif%><%endif%>$(EXPORTFLAGS) $(OUTPUT_OPTION) <%source_file%>
 <%if(source_file->postcommand)%>
@@ -308,7 +308,7 @@ $(TEMPINCDIR):
 <%foreach(resource_files)%>
 <%targetoutdir%><%obj_dir%><%resource_file%>$(RESEXT):
 <%if(targetoutdir || obj_dir)%>
-	@$(TESTDIRSTART) "<%targetoutdir%><%obj_dir%><%dirname(resource_file)%>" $(TESTDIREND) $(MKDIR) "<%targetoutdir%><%obj_dir%><%dirname(resource_file)%>"
+	@$(TESTDIRSTART) "<%targetoutdir%><%obj_dir%>" $(TESTDIREND) $(MKDIR) "<%targetoutdir%><%obj_dir%>"
 <%endif%>
 	<%rc%><%foreach(includes)%> -I<%include%><%endfor%> <%resource_file%> <%targetoutdir%><%obj_dir%><%resource_file%>$(RESEXT)
 
