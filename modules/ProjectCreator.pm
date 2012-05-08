@@ -248,6 +248,7 @@ my %csma = ('source_files' => [ 'dependent_upon',
 ## Valid component names within a project along with the valid file extensions
 my %jvc = ('source_files'        => [ "\\.java" ],
            'documentation_files' => [ "README", "readme", "\\.doc", "\\.txt", "\\.html" ],
+           'header_files' => [], ## @todo This is another hack
           );
 
 # ************************************************************
