@@ -210,7 +210,7 @@ all:<%if(prebuild)%> __prebuild__<%endif%> $(LIB)<%if(postbuild)%> __postbuild__
 <%if(staticname)%>
 $(LIB): <%if(tempinc)%>$(TEMPINCDIR) <%endif%>$(OBJS)
 	@$(TESTDIRSTART) "$(LTARGETDIR)" $(TESTDIREND) $(MKDIR) "$(LTARGETDIR)"
-	$(AR) $(ARFLAGS) <%libgenopt%>$(LIB) $(OBJS)<%if(tempinc)%> `find $(TEMPINCDIR) -name \*.o\*`<%endif%>
+	$(AR) $(ARFLAGS) <%libgenopt%>$(LIB) $(OBJS)<%if(tempinc)%> `find $(TEMPINCDIR) -name \*.o\*`<%endif%> <%if(extra_ar_objs)%><%extra_ar_objs%><%endif%>
 <%if(ranlib)%>
 	ranlib $(LIB)
 <%endif%>
