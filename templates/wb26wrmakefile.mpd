@@ -27,7 +27,7 @@ ACE_TARGET_NAME := <%exename%>
 ACE_TARGET_EXT = $(ACE_EXE_EXT)
 PROJECT_TARGET = $(if $(ACE_TARGET_EXT),$(filter %$(ACE_TARGET_EXT),$(PROJECT_TARGETS)),$(PROJECT_TARGETS))
 <%else%>
-<%if(sharedname && !compares(platform, VxWorks))%>
+<%if(sharedname && !starts_with(platform, VxWorks))%>
 ACE_TARGET_DIR = $(ACE_TARGET_NAME)_$(BUILD_SPEC)
 ACE_TARGET_PREFIX = <%foreach(buildspecs)%>$(if $(filter <%buildspec%>,$(BUILD_SPEC)),<%dll_prefix%>)<%endfor%>
 ACE_TARGET_NAME := <%sharedname%>

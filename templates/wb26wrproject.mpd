@@ -11,7 +11,7 @@
             <listAttribute key="BLD::Info|GlobalMacros">
                 <stringAttribute value="PROJECT_TYPE"/>
                 <stringAttribute value="DEFINES"/>
-<%if(compares(platform, VxWorks))%>
+<%if(starts_with(platform, VxWorks))%>
 <%if(sharedname || staticname)%>
                 <stringAttribute value="DO_STRIP"/>
                 <stringAttribute value="SHAREDLIB_VERSION"/>
@@ -34,10 +34,20 @@
             <stringAttribute key="BLD::Info|GlobalMacro|SHAREDLIB_VERSION" value=""/>
 <%endif%>
 <%endif%>
+<%if(compares(platform, VxWorksRTP))%>
+            <stringAttribute key="BLD::Info|GlobalMacro|EXPAND_DBG" value="0"/>
+            <stringAttribute key="BLD::Info|GlobalMacro|LIBPATH" value="<%foreach(libpaths)%><%fornotfirst(" ")%>-L<%if(!standard_build && !starts_with(libpath, [/\\\$]))%><%if(make_coexistence)%>../<%endif%>../<%endif%><%translate_vars(libpath, 1)%><%endfor%>"/>
+            <stringAttribute key="BLD::Info|GlobalMacro|PARTIAL_LIBS" value=""/>
+            <stringAttribute key="BLD::Info|GlobalMacro|LIBS" value="<%foreach(libs)%><%fornotfirst(" ")%>-l<%lib%><%if(use_lib_modifier)%><%lib_modifier%><%endif%><%endfor%><%foreach(lit_libs)%> -l<%lit_lib%><%endfor%><%foreach(pure_libs)%> <%pure_lib%><%endfor%>"/>
+<%if(sharedname || staticname)%>
+            <stringAttribute key="BLD::Info|GlobalMacro|DO_STRIP" value="0"/>
+            <stringAttribute key="BLD::Info|GlobalMacro|SHAREDLIB_VERSION" value=""/>
+<%endif%>
+<%endif%>
 <%foreach(buildspecs)%>
             <listAttribute key="BLD::Info|Incl|<%buildspec%>">
 <%foreach(includes platform_includes)%>
-                <stringAttribute value="-I<%if(!standard_build && !starts_with(include, [/\\\$]))%><%if(make_coexistence)%>../<%endif%>../<%endif%><%include%>"/>
+                <stringAttribute value="-I<%if(!standard_build && !starts_with(include, [/\\\$]))%>$(PRJ_ROOT_DIR)/<%if(make_coexistence)%>../<%endif%><%endif%><%include%>"/>
 <%endfor%>
             </listAttribute>
 <%endfor%>
@@ -68,8 +78,11 @@
                 <stringAttribute value="Partial Image Linker"/>
 <%endif%>
 <%endif%>
+<%if(compares(platform, VxWorksRTP))%>
+                <stringAttribute value="Linker"/>
+<%endif%>
                 <stringAttribute value="Librarian"/>
-<%if(!compares(platform, VxWorks))%>
+<%if(!starts_with(platform, VxWorks))%>
                 <stringAttribute value="C-Linker"/>
                 <stringAttribute value="C++-Linker"/>
 <%endif%>
@@ -94,7 +107,7 @@
 <%endfor%>
             <booleanAttribute key="BLD::Info|Tool|C++-Compiler|object" value="true"/>
             <booleanAttribute key="BLD::Info|Tool|C++-Compiler|passAble" value="false"/>
-            <stringAttribute key="BLD::Info|Tool|C++-Compiler|sigs" value="<%foreach(ext, extensions(source_files))%>*.<%ext%><%fornotlast(";")%><%endfor%>"/>
+            <stringAttribute key="BLD::Info|Tool|C++-Compiler|sigs" value="*.cpp;*.cxx"/>
 <%if(!compares(platform, VxWorks))%>
 <%foreach(buildspecs)%>
             <stringAttribute key="BLD::Info|Tool|C++-Linker|cmd|<%buildspec%>" value="echo &quot;building $@&quot;;%cpplinkerprefix% $(TOOL_PATH)<%cxx%> %DebugModeFlags% %ToolFlags% -o %OutFile% %Objects% $(ADDED_OBJECTS) %Libraries% $(LIBPATH) $(LIBS) $(ADDED_LIBPATH) $(ADDED_LIBS)"/>
@@ -117,7 +130,7 @@
             <booleanAttribute key="BLD::Info|Tool|C-Compiler|object" value="true"/>
             <booleanAttribute key="BLD::Info|Tool|C-Compiler|passAble" value="false"/>
             <stringAttribute key="BLD::Info|Tool|C-Compiler|sigs" value="*.c"/>
-<%if(!compares(platform, VxWorks))%>
+<%if(!starts_with(platform, VxWorks))%>
 <%foreach(buildspecs)%>
             <stringAttribute key="BLD::Info|Tool|C-Linker|cmd|<%buildspec%>" value="echo &quot;building $@&quot;;%clinkerprefix% $(TOOL_PATH)<%if(cc)%><%cc%><%else%><%cxx%><%endif%> %DebugModeFlags% %ToolFlags% -o %OutFile% %Objects% $(ADDED_OBJECTS) %Libraries% $(LIBPATH) $(LIBS) $(ADDED_LIBPATH) $(ADDED_LIBS)"/>
             <stringAttribute key="BLD::Info|Tool|C-Linker|dbgFlags|<%buildspec%>" value=""/>
@@ -160,6 +173,17 @@
             <booleanAttribute key="BLD::Info|Tool|Partial Image Linker|object" value="false"/>
             <booleanAttribute key="BLD::Info|Tool|Partial Image Linker|passAble" value="true"/>
             <stringAttribute key="BLD::Info|Tool|Partial Image Linker|sigs" value=""/>
+<%endif%>
+<%if(compares(platform, VxWorksRTP))%>
+<%foreach(buildspecs)%>
+            <stringAttribute key="BLD::Info|Tool|Linker|dbgFlags|<%buildspec%>" value="<%linker_dbgflags%>"/>
+            <stringAttribute key="BLD::Info|Tool|Linker|derivedSigs|<%buildspec%>" value="<%if(exename)%>*<%exe_ext%><%else%>*<%lib_ext%><%endif%>"/>
+            <stringAttribute key="BLD::Info|Tool|Linker|flags|<%buildspec%>" value="<%linker_flags%>"/>
+            <stringAttribute key="BLD::Info|Tool|Linker|nonDbgFlags|<%buildspec%>" value="<%linker_nondbgflags%>"/>
+<%endfor%>
+            <booleanAttribute key="BLD::Info|Tool|Linker|object" value="false"/>
+            <booleanAttribute key="BLD::Info|Tool|Linker|passAble" value="false"/>
+            <stringAttribute key="BLD::Info|Tool|Linker|sigs" value=""/>
 <%endif%>
             <stringAttribute key="BLD::Info|cmd" value="%makeprefix% make --no-print-directory"/>
             <stringAttribute key="BLD::Info|defaultSpec" value="<%default_buildspec%>"/>
@@ -205,7 +229,7 @@
 <%if(exename)%>
         <buildtarget buildtool="<%exe_buildtool%>" name="<%exename%>" passed="true" targetname="<%exename%>">
 <%else%>
-<%if(sharedname && !compares(platform, VxWorks))%>
+<%if(sharedname && !starts_with(platform, VxWorks))%>
 <%foreach(buildspecs)%>
         <buildtarget buildtool="<%dll_buildtool%>" name="<%dll_prefix%><%sharedname%>" passed="true" targetname="<%sharedname%>_<%buildspec%>">
             <attributes>
@@ -233,13 +257,22 @@
 <%endif%>
 <%endif%>
 <%endif%>
-<%if(!sharedname || compares(platform, VxWorks))%>
+<%if(exename && compares(platform, VxWorksRTP))%>
+           <attributes>
+                <mapAttribute>
+<%foreach(buildspecs)%>
+                    <stringAttribute key="BLD::Info|Tool|Linker|cmd|<%buildspec%>" value="echo &quot;building $@&quot;;%linkerprefix% $(TOOL_PATH)<%cxx%> -r -nostdlib -Wl,-X %ToolFlags% -o %OutFile% %Objects% $(ADDED_OBJECTS) $(LIBPATH) <%if(linkflags)%> <%linkflags%><%endif%><%if(link_groups)%> -Wl,--start-group<%endif%> $(PARTIAL_LIBS) $(LIBS) <%if(link_groups)%>-Wl,--end-group<%endif%> $(ADDED_LIBPATH) $(ADDED_LIBS) &amp;&amp; if [ &quot;$(EXPAND_DBG)&quot; = &quot;1&quot; ]; then plink &quot;$@&quot;;fi"/>
+<%endfor%>
+                </mapAttribute>
+            </attributes>
+<%endif%>
+<%if(!sharedname || starts_with(platform, VxWorks))%>
             <contents>
 <%if(exename && compares(platform, VxWorks))%>
                 <buildtargetreference name="/<%project_prefix%><%project_name%>/PartialImage"/>
 <%else%>
 <%foreach(source_files)%>
-                <file name="/<%project_prefix%><%project_name%>/<%source_file%>"/>
+                <file name="/<%project_prefix%><%project_name%>/<%basename(source_file)%>"/>
 <%endfor%>
 <%foreach(source_dirs)%>
                 <folder name="/<%source_dir%>" recursive="false"/>
@@ -259,10 +292,10 @@
             </attributes>
             <contents>
 <%if(pch_source)%>
-                <file name="/<%project_prefix%><%project_name%>/<%pch_source%>"/>
+                <file name="/<%project_prefix%><%project_name%>/<%basename(pch_source)%>"/>
 <%endif%>
 <%foreach(source_files)%>
-                <file name="/<%project_prefix%><%project_name%>/<%source_file%>"/>
+                <file name="/<%project_prefix%><%project_name%>/<%basename(source_file)%>"/>
 <%endfor%>
 <%foreach(source_dirs)%>
                 <folder name="/<%source_dir%>" recursive="false"/>
