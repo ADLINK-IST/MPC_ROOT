@@ -261,7 +261,7 @@
            <attributes>
                 <mapAttribute>
 <%foreach(buildspecs)%>
-                    <stringAttribute key="BLD::Info|Tool|Linker|cmd|<%buildspec%>" value="echo &quot;building $@&quot;;%linkerprefix% $(TOOL_PATH)<%cxx%> -r -nostdlib -Wl,-X %ToolFlags% -o %OutFile% %Objects% $(ADDED_OBJECTS) $(LIBPATH) <%if(linkflags)%> <%linkflags%><%endif%><%if(link_groups)%> -Wl,--start-group<%endif%> $(PARTIAL_LIBS) $(LIBS) <%if(link_groups)%>-Wl,--end-group<%endif%> $(ADDED_LIBPATH) $(ADDED_LIBS) &amp;&amp; if [ &quot;$(EXPAND_DBG)&quot; = &quot;1&quot; ]; then plink &quot;$@&quot;;fi"/>
+    <stringAttribute key="BLD::Info|Tool|Linker|cmd|<%buildspec%>" value="echo &quot;building $@&quot;;%linkerprefix% $(TOOL_PATH)<%cxx%> %ToolFlags% -o %OutFile% %Objects% $(ADDED_OBJECTS) $(LIBPATH) <%if(linkflags)%> <%linkflags%><%endif%><%if(link_groups)%> -Wl,--start-group<%endif%> $(PARTIAL_LIBS) $(LIBS) <%if(link_groups)%>-Wl,--end-group<%endif%> $(ADDED_LIBPATH) $(ADDED_LIBS) &amp;&amp; if [ &quot;$(DO_STRIP)&quot; = &quot;1&quot; ]; then mv -f &quot;$@&quot; &quot;$@.unstripped&quot; &amp;&amp; strip<%vx_cpu_family%> -g -o &quot;$@&quot; &quot;$@.unstripped&quot;;fi &amp;&amp; if [ &quot;$(EXPAND_DBG)&quot; = &quot;1&quot; ]; then plink &quot;$@&quot;;fi"/>
 <%endfor%>
                 </mapAttribute>
             </attributes>
