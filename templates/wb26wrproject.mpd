@@ -36,7 +36,7 @@
 <%endif%>
 <%if(compares(platform, VxWorksRTP))%>
             <stringAttribute key="BLD::Info|GlobalMacro|EXPAND_DBG" value="0"/>
-            <stringAttribute key="BLD::Info|GlobalMacro|LIBPATH" value="<%foreach(libpaths)%><%fornotfirst(" ")%>-L<%if(!standard_build && !starts_with(libpath, [/\\\$]))%><%if(make_coexistence)%>../<%endif%>../<%endif%><%translate_vars(libpath, 1)%><%endfor%>"/>
+            <stringAttribute key="BLD::Info|GlobalMacro|LIBPATH" value="<%foreach(libpaths)%><%fornotfirst(" ")%>-L&quot;<%if(!standard_build && !starts_with(libpath, [/\\\$]))%><%if(make_coexistence)%>../<%endif%>../<%endif%><%libpath%>&quot;<%endfor%>"/>
             <stringAttribute key="BLD::Info|GlobalMacro|PARTIAL_LIBS" value=""/>
             <stringAttribute key="BLD::Info|GlobalMacro|LIBS" value="<%foreach(libs)%><%fornotfirst(" ")%>-l<%lib%><%if(use_lib_modifier)%><%lib_modifier%><%endif%><%endfor%><%foreach(lit_libs)%> -l<%lit_lib%><%endfor%><%foreach(pure_libs)%> <%pure_lib%><%endfor%>"/>
 <%if(sharedname || staticname)%>
