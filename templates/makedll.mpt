@@ -35,7 +35,7 @@ versupport       = 1
 supports_include = 1
 visibility       =
 depgen_flags     =
-cc               = cc
+// cc               = cc
 notparallel      = 1
 
 // ***********************************************************************
@@ -79,6 +79,7 @@ gcj {
 }
 
 cxx_tru64 {
+  cc         = cc
   cxx        = cxx
   clean      = cxx_repository so_locations
   tempincopt = "-ptr "
@@ -89,6 +90,7 @@ cxx_tru64 {
 }
 
 cxx_vms {
+  cc              = cc
   cxx             = cxx
   arflags         = r
   compilerflags   = -ieee -names_as_is_short
@@ -140,6 +142,7 @@ arm_elf_gcc {
 }
 
 Intel {
+  cc        = cc
   cxx       = icpc
   pic       = -fPIC
   shflags   = -shared
@@ -148,6 +151,7 @@ Intel {
 }
 
 SunCC {
+  cc              = cc
   cxx             = CC
   pic             = -KPIC
   shflags         = -G
@@ -163,6 +167,7 @@ SunCC {
 }
 
 aCC {
+  cc              = cc
   cxx             = aCC
   pic             = +Z
   shflags         = -b
@@ -186,6 +191,7 @@ xlC_r {
 }
 
 SGICC {
+  cc              = cc
   cxx             = CC
   pic             = -KPIC
   shflags         = -shared
@@ -221,6 +227,7 @@ wrspentium {
 }
 
 NCC {
+  cc        = cc
   cxx       = NCC
   pic       = -KPIC
   platforms = tandem
