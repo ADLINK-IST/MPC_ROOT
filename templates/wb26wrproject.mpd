@@ -26,8 +26,8 @@
             <stringAttribute key="BLD::Info|GlobalMacro|PROJECT_TYPE" value="<%if(project_type_macro)%><%project_type_macro%><%else%><%if(exename)%>APP<%endif%><%endif%>"/>
 <%if(compares(platform, VxWorks))%>
             <stringAttribute key="BLD::Info|GlobalMacro|EXPAND_DBG" value="0"/>
-            <stringAttribute key="BLD::Info|GlobalMacro|LIBPATH" value="<%foreach(libpaths)%><%fornotfirst(" ")%>-L<%libpath%><%endfor%>"/>
-            <stringAttribute key="BLD::Info|GlobalMacro|PARTIAL_LIBS" value="<%foreach(libs)%><%fornotfirst(" ")%>-l<%lib%><%if(use_lib_modifier)%><%lib_modifier%><%endif%><%if(!standard_build)%><%lib_ext%><%endif%><%endfor%><%foreach(lit_libs)%> <%lit_lib%>.lib<%endfor%><%foreach(pure_libs)%> <%pure_lib%><%endfor%>"/>
+            <stringAttribute key="BLD::Info|GlobalMacro|LIBPATH" value="<%foreach(libpaths)%><%fornotfirst(" ")%>-L&quot;<%if(!standard_build && !starts_with(libpath, [/\\\$]))%><%if(make_coexistence)%>../<%endif%>../<%endif%><%libpath%>&quot;<%endfor%>"/>
+            <stringAttribute key="BLD::Info|GlobalMacro|PARTIAL_LIBS" value="<%foreach(libs)%><%fornotfirst(" ")%>-l<%lib%><%if(use_lib_modifier)%><%lib_modifier%><%endif%><%endfor%><%foreach(lit_libs)%> -l<%lit_lib%><%endfor%><%foreach(pure_libs)%> <%pure_lib%><%endfor%>"/>
             <stringAttribute key="BLD::Info|GlobalMacro|LIBS" value=""/>
 <%if(sharedname || staticname)%>
             <stringAttribute key="BLD::Info|GlobalMacro|DO_STRIP" value="0"/>
@@ -73,7 +73,7 @@
                 <stringAttribute value="C-Compiler"/>
                 <stringAttribute value="C++-Compiler"/>
 <%if(compares(platform, VxWorks))%>
-<%if(sharedname || staticname)%>
+<%if(sharedname || staticname || exename)%>
                 <stringAttribute value="Linker"/>
                 <stringAttribute value="Partial Image Linker"/>
 <%endif%>

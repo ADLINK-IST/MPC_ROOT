@@ -1157,7 +1157,14 @@ sub expand_variables {
     $start += length($whole);
   }
 
-  $value =~ s/\\/\//g if ($self->{'requires_forward_slashes'});
+  if ($self->{'requires_forward_slashes'})
+  {
+    ## @todo OSPL-1420 VxWorks with Linux host template variables containing <%equote%> were getting
+    ## munged to /&quote
+    $value =~ s/\\\&quot\;/\10/g;
+    $value =~ s/\\/\//g;
+    $value =~ s/\10/\\\&quot\;/g;
+  }
 
   return $value;
 }
