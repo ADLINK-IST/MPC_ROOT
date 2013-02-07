@@ -87,17 +87,6 @@ Windows Mobile 6 Professional SDK (ARMV4I) {
   TargetMachine    = "0"
 }
 
-WinCE-GS3Target (ARMV4I) {
-  unicode          = 1
-  output_subdir    = WinCE_GS3Target_ARMV4I
-  cpu_defines      = $(ARCHFAM) $(_ARCHFAM_)
-  platform_defines = UNDER_CE=$(CEVER) _WIN32_WCE=$(CEVER) WINCE _WINDOWS _UNICODE UNICODE
-  link_options     = /subsystem:windowsce,6.0
-  lit_libs        += iphlpapi
-  subsystem        = "0"
-  TargetMachine    = "0"
-}
-
 SuperSonic_CE6 (ARMV4I) {
   unicode              = 1
   output_subdir        = SUPERSONIC_CE6_ARMV4I
@@ -185,3 +174,5 @@ STANDARDSDK_500 (x86) {
   subsystem        = "0"
   TargetMachine    = "0"
 }
+
+conditional_include "user_vc8platforms"
