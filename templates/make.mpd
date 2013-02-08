@@ -284,7 +284,7 @@ $(TEMPINCDIR):
 <%if(pch_source && pchsupport)%>
 <%targetoutdir%><%obj_dir%><%if(obj_dir_flat)%><%basenoextension(pch_source)%><%else%><%noextension(pch_source)%><%endif%>$(OBJEXT): <%pch_source%>
 <%if(targetoutdir || obj_dir)%>
-	@$(TESTDIRSTART) "<%targetoutdir%><%obj_dir%>" $(TESTDIREND) $(MKDIR) "<%targetoutdir%><%obj_dir%>"
+	@$(TESTDIRSTART) "<%targetoutdir%><%obj_dir%><%dirname(pch_source)%>" $(TESTDIREND) $(MKDIR) "<%targetoutdir%><%obj_dir%><%dirname(pch_source)%>"
 <%endif%>
 	<%if(ends_with(pch_source, \.c))%>$(COMPILE.c)<%else%>$(COMPILE.cc)<%endif%> <%if(pchcreate)%><%pchcreate%><%targetoutdir%><%obj_dir%><%pch_header%><%pchext%> <%endif%>$(EXPORTFLAGS)<%if(!pchnobj)%> $(OUTPUT_OPTION)<%endif%> <%pch_source%>
 <%if(pchnobj)%>
@@ -295,7 +295,7 @@ $(TEMPINCDIR):
 <%foreach(source_files)%>
 <%targetoutdir%><%obj_dir%><%if(obj_dir_flat)%><%basenoextension(source_file)%><%else%><%noextension(source_file)%><%endif%>$(OBJEXT): <%source_file%>
 <%if(targetoutdir || obj_dir)%>
-	@$(TESTDIRSTART) "<%targetoutdir%><%obj_dir%>" $(TESTDIREND) $(MKDIR) "<%targetoutdir%><%obj_dir%>"
+	@$(TESTDIRSTART) "<%targetoutdir%><%obj_dir%><%dirname(source_file)%>" $(TESTDIREND) $(MKDIR) "<%targetoutdir%><%obj_dir%><%dirname(source_file)%>"
 <%endif%>
 	<%if(ends_with(source_file, \.c) || ends_with(source_file, \.[Ss]))%>$(COMPILE.c)<%else%>$(COMPILE.cc)<%endif%> <%if(flag_overrides(source_file, buildflags))%><%flag_overrides(source_file, buildflags)%> <%endif%><%if(pchuse && pch_source && pchsupport)%><%pchuse%><%pch_header%><%pchext%> <%if(pchstop)%><%pchstop%><%pch_header%><%endif%><%endif%>$(EXPORTFLAGS) $(OUTPUT_OPTION) <%source_file%>
 <%if(source_file->postcommand)%>
