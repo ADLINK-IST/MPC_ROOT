@@ -69,7 +69,11 @@
     </DocumentationFile>
     <DebugSymbols><%if(optimize)%>false<%else%>true<%endif%></DebugSymbols>
     <FileAlignment>4096</FileAlignment>
+<%if(is_compact_framework)%>
+    <NoStdLib>true</NoStdLib>
+<%else%>
     <NoStdLib>false</NoStdLib>
+<%endif%>
 <%if(DisableSpecificWarnings)%>
     <NoWarn><%foreach(DisableSpecificWarnings)%><%DisableSpecificWarning%><%fornotlast(";")%><%endfor%></NoWarn>
 <%endif%>
@@ -99,10 +103,16 @@
 <%if(after)%>
     <!-- MPC ADD DEPENDENCIES -->
 <%endif%>
+<%if(is_compact_framework)%>
+    <Reference Include="mscorlib.dll">
+      <HintPath>C:\Program Files (x86)\Microsoft.NET\SDK\CompactFramework\v3.5\WindowsCE\mscorlib.dll</HintPath>
+    </Reference>
+<%else%>
 <%if(TargetFrameworkVersion)%>
     <Reference Include="System.Core">
       <RequiredTargetFramework><%TargetFrameworkVersion%></RequiredTargetFramework>
     </Reference>
+<%endif%>
 <%endif%>
 <%foreach(libs)%>
     <Reference Include="<%libname_prefix%><%lib%>">
