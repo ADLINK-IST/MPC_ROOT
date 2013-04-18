@@ -33,7 +33,7 @@ CXX           = <%cxx%>
 <%if(ld)%>
 LD            = <%ld%>
 <%else%>
-LD            = $(CXX) $(CCFLAGS) $(CPPFLAGS)
+LD            = $(CXX) $(CCFLAGS) $(PICFLAGS) $(GENFLAGS) $(LDFLAGS)
 <%endif%>
 AR            = <%ar("ar")%>
 <%if(nm)%>
