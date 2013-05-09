@@ -2,31 +2,15 @@
 #       Macros
 #----------------------------------------------------------------------------
 <%marker(top)%>
-<%if(multiple(configurations) || multiple(platforms))%>
-<%foreach(configurations)%>
-<%if(forfirst)%>
-<%if(multiple(platforms))%>
-<%foreach(platforms)%>
-<%if(forfirst)%>
-CFG = <%platform%> <%configuration%>
-<%endif%>
-<%endfor%>
-<%else%>
-CFG = <%configuration%>
+<%if(multiple(configurations) || multiple(platforms) || multiple(compilers))%>
+CFG = <%if(multiple(compilers))%><%foreach(compilers)%><%if(forfirst)%><%compiler%><%if(multiple(platforms) || multiple(configurations))%>_<%endif%><%endif%><%endfor%><%endif%><%if(multiple(platforms))%><%foreach(platforms)%><%if(forfirst)%><%platform%><%if(multiple(configurations))%>_<%endif%><%endif%><%endfor%><%endif%><%if(multiple(configurations))%><%foreach(configurations)%><%if(forfirst)%><%configuration%><%endif%><%endfor%><%endif%>
 <%endif%>
 
-<%endif%>
-<%endfor%>
-<%endif%>
 <%foreach(compilers)%>
 <%foreach(platforms)%>
 <%foreach(configurations)%>
-<%if(multiple(platforms))%>
-ifeq ($(CFG), <%platform%> <%configuration%>)
-<%else%>
-<%if(multiple(configurations))%>
-ifeq ($(CFG), <%configuration%>)
-<%endif%>
+<%if(multiple(configurations) || multiple(platforms) || multiple(compilers))%>
+ifeq ($(CFG), <%if(multiple(compilers))%><%compiler%><%if(multiple(platforms) || multiple(configurations))%>_<%endif%><%endif%><%if(multiple(platforms))%><%platform%><%if(multiple(configurations))%>_<%endif%><%endif%><%if(multiple(configurations))%><%configuration%><%endif%>)
 <%endif%>
 CC            = <%cc%>
 CXX           = <%cxx%>
@@ -136,9 +120,11 @@ EXPORTFLAGS   = <%if(exename)%><%if(need_staticflags)%>$(STATICFLAGS)<%endif%><%
 <%if(gnumake && exename && libpaths && need_staticflags)%>
 DEPLIBS       = $(foreach lib,<%foreach(libs)%> <%libname_prefix%><%lib%><%endfor%> <%lit_libs%>, $(foreach libpath,<%foreach(libpaths)%><%if(targetoutdir)%> <%libpath%>/<%targetoutdir%><%endif%> <%libpath%><%endfor%>, $(wildcard $(libpath)/lib$(lib).a)))
 <%endif%>
-<%if(multiple(configurations) || multiple(platforms))%>
+<%if(multiple(configurations) || multiple(platforms) || multiple(compilers))%>
 endif
 <%endif%>
+<%endfor%>
+<%endfor%>
 <%endfor%>
 <%if(supports_include && make_include)%>
 
@@ -350,6 +336,7 @@ __postbuild__:
 
 <%endif%>
 <%marker(local)%>
+<%if(supports_include)%>
 #----------------------------------------------------------------------------
 #       Dependencies
 #----------------------------------------------------------------------------
@@ -364,13 +351,6 @@ depend:
 	@-:
 <%endif%>
 
-<%if(forlast)%>
-<%if(supports_include)%>
 include $(DEPENDENCIES)
-<%else%>
-# DO NOT DELETE THIS LINE
 <%endif%>
-<%endif%>
-<%endfor%>
-<%endfor%>
 <%marker(bottom)%>
