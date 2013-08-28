@@ -38,7 +38,9 @@ depgen_flags     =
 // cc               = cc
 notparallel      = 1
 // Default gmake off - we can't assume users have it.
-gnumake          = 0
+// ... but don't 'hard' undefine it like below line
+// This can only then be overridden form the command line
+// gnumake          =
 
 // ***********************************************************************
 // Configuration Section
