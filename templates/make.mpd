@@ -221,14 +221,11 @@ SHLIB_PATH        := $(SHLIB_PATH):<%custom_type->libpath%>
 LIBPATH           := $(LIBPATH):<%custom_type->libpath%>
 PATH              := $(PATH):<%custom_type->libpath%>
 
-<%endif%>
-<%if(gnumake &&custom_type->libpath)%>
-export DYLD_LIBRARY_PATH := $(DYLD_LIBRARY_PATH):<%custom_type->libpath%>
+<%endif%><%foreach(compilers)%><%foreach(platforms)%><%if(forfirst)%><%if(gnumake)%><%if(custom_type->libpath)%>export DYLD_LIBRARY_PATH := $(DYLD_LIBRARY_PATH):<%custom_type->libpath%>
 export LD_LIBRARY_PATH   := $(LD_LIBRARY_PATH):<%custom_type->libpath%>
 export SHLIB_PATH        := $(SHLIB_PATH):<%custom_type->libpath%>
 export LIBPATH           := $(LIBPATH):<%custom_type->libpath%>
-export PATH              := $(PATH):<%custom_type->libpath%>
-<%endif%>
+export PATH              := $(PATH):<%custom_type->libpath%><%endif%><%endif%><%endif%><%endfor%><%endfor%>
 <%foreach(custom_type->input_files)%>
 <%if(custom_type->input_file->output_files)%>
 <%if(notparallel && multiple(custom_type->input_file->output_files))%>
