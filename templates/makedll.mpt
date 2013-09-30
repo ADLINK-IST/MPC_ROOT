@@ -53,7 +53,7 @@ Debug {
 
 Release {
   optimize = 1
-  genflags = -O3
+  genflags = -O3 -DNDEBUG
 }
 
 // ***********************************************************************
