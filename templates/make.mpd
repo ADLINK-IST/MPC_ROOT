@@ -221,7 +221,11 @@ SHLIB_PATH        := $(SHLIB_PATH):<%custom_type->libpath%>
 LIBPATH           := $(LIBPATH):<%custom_type->libpath%>
 PATH              := $(PATH):<%custom_type->libpath%>
 
-<%endif%>
+<%endif%><%foreach(compilers)%><%foreach(platforms)%><%if(forfirst)%><%if(gnumake)%><%if(custom_type->libpath)%>export DYLD_LIBRARY_PATH := $(DYLD_LIBRARY_PATH):<%custom_type->libpath%>
+export LD_LIBRARY_PATH   := $(LD_LIBRARY_PATH):<%custom_type->libpath%>
+export SHLIB_PATH        := $(SHLIB_PATH):<%custom_type->libpath%>
+export LIBPATH           := $(LIBPATH):<%custom_type->libpath%>
+export PATH              := $(PATH):<%custom_type->libpath%><%endif%><%endif%><%endif%><%endfor%><%endfor%>
 <%foreach(custom_type->input_files)%>
 <%if(custom_type->input_file->output_files)%>
 <%if(notparallel && multiple(custom_type->input_file->output_files))%>
@@ -282,7 +286,7 @@ $(TEMPINCDIR):
 <%foreach(source_files)%>
 <%targetoutdir%><%obj_dir%><%if(obj_dir_flat)%><%basenoextension(source_file)%><%else%><%noextension(source_file)%><%endif%>$(OBJEXT): <%source_file%>
 <%if(targetoutdir || obj_dir)%>
-	@$(TESTDIRSTART) "<%targetoutdir%><%obj_dir%><%dirname(source_file)%>" $(TESTDIREND) $(MKDIR) "<%targetoutdir%><%obj_dir%><%dirname(source_file)%>"
+	@$(TESTDIRSTART) "<%targetoutdir%><%obj_dir%><%if(obj_dir_flat)%><%else%><%dirname(source_file)%><%endif%>" $(TESTDIREND) $(MKDIR) "<%targetoutdir%><%obj_dir%><%if(obj_dir_flat)%><%else%><%dirname(source_file)%><%endif%>"
 <%endif%>
 	<%if(ends_with(source_file, \.c) || ends_with(source_file, \.[Ss]))%>$(COMPILE.c)<%else%>$(COMPILE.cc)<%endif%> <%if(flag_overrides(source_file, buildflags))%><%flag_overrides(source_file, buildflags)%> <%endif%><%if(pchuse && pch_source && pchsupport)%><%pchuse%><%pch_header%><%pchext%> <%if(pchstop)%><%pchstop%><%pch_header%><%endif%><%endif%>$(EXPORTFLAGS) $(OUTPUT_OPTION) <%source_file%>
 <%if(source_file->postcommand)%>

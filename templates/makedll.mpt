@@ -37,6 +37,10 @@ visibility       =
 depgen_flags     =
 // cc               = cc
 notparallel      = 1
+// Default gmake off - we can't assume users have it.
+// ... but don't 'hard' undefine it like below line
+// This can only then be overridden form the command line
+// gnumake          =
 
 // ***********************************************************************
 // Configuration Section
@@ -49,7 +53,7 @@ Debug {
 
 Release {
   optimize = 1
-  genflags = -O
+  genflags = -O3 -DNDEBUG
 }
 
 // ***********************************************************************

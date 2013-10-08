@@ -46,6 +46,11 @@ my %info = (Creator::cplusplus() => {'dllexe'   => 'makeexe',
 # Subroutine Section
 # ************************************************************
 
+sub convert_slashes {
+  #my $self = shift;
+  return $ENV{MPC_USE_WIN_COMMANDS};
+}
+
 sub languageSupported {
   return defined $info{$_[0]->get_language()};
 }
