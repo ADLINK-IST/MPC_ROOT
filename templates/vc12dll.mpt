@@ -27,7 +27,7 @@ Debug {
   output_dir       = .
   intermediate_dir = Debug
   lib_modifier     = d
-  GenerateDebugInformation = true
+//  GenerateDebugInformation = true
 }
 
 Memcheck Release {

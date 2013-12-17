@@ -30,7 +30,7 @@ Debug {
   output_dir       = Static_Debug
   intermediate_dir = Static_Debug
   lib_modifier     = sd
-  GenerateDebugInformation = true
+//  GenerateDebugInformation = true
 }
 
 Memcheck Release {
