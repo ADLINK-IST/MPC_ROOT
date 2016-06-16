@@ -18,7 +18,7 @@ Release {
   intermediate_dir = Release
   EnableIntrinsicFunctions = true
   WholeProgramOptimization = true
-  GenerateDebugInformation = false
+  GenerateDebugInformation = true
 }
 
 Debug {
@@ -27,7 +27,7 @@ Debug {
   output_dir       = .
   intermediate_dir = Debug
   lib_modifier     = d
-//  GenerateDebugInformation = true
+  GenerateDebugInformation = true
 }
 
 Memcheck Release {

@@ -19,7 +19,7 @@ Release {
   lib_modifier     = s
   EnableIntrinsicFunctions = true
   WholeProgramOptimization = true
-  GenerateDebugInformation = false
+  GenerateDebugInformation = true
 }
 
 Debug {
@@ -28,7 +28,7 @@ Debug {
   output_dir       = Static_Debug
   intermediate_dir = Static_Debug
   lib_modifier     = sd
-//  GenerateDebugInformation = true
+  GenerateDebugInformation = true
 }
 
 Memcheck Release {
