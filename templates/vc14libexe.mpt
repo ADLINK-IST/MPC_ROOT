@@ -10,7 +10,7 @@ ConfigurationType  = 1
 SubSystem          = Console
 MinimalRebuild     = false
 
-conditional_include "vc12platforms"
+conditional_include "vc14platforms"
 
 Release {
   LinkIncremental  = 1

@@ -10,15 +10,14 @@ ConfigurationType  = 1
 SubSystem          = Console
 MinimalRebuild     = false
 
-conditional_include "vc12platforms"
+conditional_include "vc14platforms"
 
 Release {
   LinkIncremental  = 1
   optimize         = MaxSpeed
   defines          = NDEBUG
-  output_dir       = Static_Release
-  intermediate_dir = Static_Release
-  lib_modifier     = s
+  output_dir       = Release
+  intermediate_dir = Release
   EnableIntrinsicFunctions = true
   WholeProgramOptimization = true
   GenerateDebugInformation = true
@@ -27,18 +26,16 @@ Release {
 Debug {
   debug_prj        = 1
   defines          = _DEBUG
-  output_dir       = Static_Debug
-  intermediate_dir = Static_Debug
-  lib_modifier     = sd
+  intermediate_dir = Debug
+  lib_modifier     = d
   GenerateDebugInformation = true
 }
 
 Memcheck Release {
   optimize           = MaxSpeed
   defines            = NDEBUG
-  output_dir         = Static_Release
-  intermediate_dir   = Static_Release
-  lib_modifier       = s
+  output_dir         = Release
+  intermediate_dir   = Release
   BasicRuntimeChecks = 0
   LinkIncremental    = 1
   FixedBaseAddress   = 1
@@ -49,9 +46,8 @@ Memcheck Release {
 Memcheck Debug {
   debug_prj          = 1
   defines            = _DEBUG
-  output_dir         = Static_Debug
-  intermediate_dir   = Static_Debug
-  lib_modifier       = sd
+  intermediate_dir   = Debug
+  lib_modifier       = d
   BasicRuntimeChecks = 0
   LinkIncremental    = 1
   FixedBaseAddress   = 1
@@ -62,9 +58,9 @@ MFC Release {
   optimize          = MaxSpeed
   common_defines    = WIN32 _WINDOWS
   defines           = NDEBUG _AFXDLL
-  output_dir        = Static_MFC_Release
-  intermediate_dir  = Static_MFC_Release
-  lib_modifier      = mfcs
+  output_dir        = MFC_Release
+  intermediate_dir  = MFC_Release
+  lib_modifier      = mfc
   UseOfMFC          = Dynamic
   unicode_mfc_entry = wWinMainCRTStartup
   EnableIntrinsicFunctions = true
@@ -75,12 +71,12 @@ MFC Debug {
   debug_prj         = 1
   common_defines    = WIN32 _WINDOWS
   defines           = _DEBUG _AFXDLL
-  output_dir        = Static_MFC_Debug
-  intermediate_dir  = Static_MFC_Debug
-  lib_modifier      = mfcsd
+  output_dir        = MFC_Debug
+  intermediate_dir  = MFC_Debug
+  lib_modifier      = mfcd
   UseOfMFC          = Dynamic
   unicode_mfc_entry = wWinMainCRTStartup
 }
 
 conditional_include "vcpartialmacros"
-conditional_include "user_vc10libexe"
+conditional_include "user_vc10exe"
