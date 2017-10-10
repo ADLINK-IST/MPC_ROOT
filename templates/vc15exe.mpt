@@ -5,28 +5,30 @@ conditional_include "common"
 conditional_include "windowscommon"
 
 configurations     = Debug Release
-common_defines     = WIN32 _WINDOWS _CRT_NONSTDC_NO_WARNINGS NDEBUG
-ConfigurationType  = 2
+common_defines     = WIN32 _CONSOLE _CRT_NONSTDC_NO_WARNINGS NDEBUG
+ConfigurationType  = 1
+SubSystem          = Console
 MinimalRebuild     = false
-GenerateDebugInformation = true
 
-conditional_include "vc10platforms"
+conditional_include "vc15platforms"
 
 Release {
+  LinkIncremental  = 1
   optimize         = MaxSpeed
   defines          = NDEBUG
   output_dir       = Release
   intermediate_dir = Release
   EnableIntrinsicFunctions = true
   WholeProgramOptimization = true
+  GenerateDebugInformation = true
 }
 
 Debug {
   debug_prj        = 1
   defines          = _DEBUG
-  output_dir       = .
   intermediate_dir = Debug
   lib_modifier     = d
+  GenerateDebugInformation = true
 }
 
 Memcheck Release {
@@ -35,6 +37,7 @@ Memcheck Release {
   output_dir         = Release
   intermediate_dir   = Release
   BasicRuntimeChecks = 0
+  LinkIncremental    = 1
   FixedBaseAddress   = 1
   EnableIntrinsicFunctions = true
   WholeProgramOptimization = true
@@ -43,7 +46,6 @@ Memcheck Release {
 Memcheck Debug {
   debug_prj          = 1
   defines            = _DEBUG
-  output_dir         = .
   intermediate_dir   = Debug
   lib_modifier       = d
   BasicRuntimeChecks = 0
@@ -52,24 +54,29 @@ Memcheck Debug {
 }
 
 MFC Release {
-  optimize         = MaxSpeed
-  defines          = NDEBUG
-  output_dir       = MFC_Release
-  intermediate_dir = MFC_Release
-  lib_modifier     = mfc
-  UseOfMFC         = Dynamic
+  LinkIncremental   = 1
+  optimize          = MaxSpeed
+  common_defines    = WIN32 _WINDOWS
+  defines           = NDEBUG _AFXDLL
+  output_dir        = MFC_Release
+  intermediate_dir  = MFC_Release
+  lib_modifier      = mfc
+  UseOfMFC          = Dynamic
+  unicode_mfc_entry = wWinMainCRTStartup
   EnableIntrinsicFunctions = true
   WholeProgramOptimization = true
 }
 
 MFC Debug {
-  debug_prj        = 1
-  defines          = _DEBUG
-  output_dir       = MFC_Debug
-  intermediate_dir = MFC_Debug
-  lib_modifier     = mfcd
-  UseOfMFC         = Dynamic
+  debug_prj         = 1
+  common_defines    = WIN32 _WINDOWS
+  defines           = _DEBUG _AFXDLL
+  output_dir        = MFC_Debug
+  intermediate_dir  = MFC_Debug
+  lib_modifier      = mfcd
+  UseOfMFC          = Dynamic
+  unicode_mfc_entry = wWinMainCRTStartup
 }
 
 conditional_include "vcpartialmacros"
-conditional_include "user_vc10dll"
+conditional_include "user_vc10exe"

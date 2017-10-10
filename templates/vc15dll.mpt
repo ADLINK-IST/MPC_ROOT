@@ -8,9 +8,8 @@ configurations     = Debug Release
 common_defines     = WIN32 _WINDOWS _CRT_NONSTDC_NO_WARNINGS NDEBUG
 ConfigurationType  = 2
 MinimalRebuild     = false
-GenerateDebugInformation = true
 
-conditional_include "vc10platforms"
+conditional_include "vc15platforms"
 
 Release {
   optimize         = MaxSpeed
@@ -19,14 +18,16 @@ Release {
   intermediate_dir = Release
   EnableIntrinsicFunctions = true
   WholeProgramOptimization = true
+  GenerateDebugInformation = true
 }
 
 Debug {
   debug_prj        = 1
-  defines          = _DEBUG
+  defines          = _DEBUG NDEBUG
   output_dir       = .
   intermediate_dir = Debug
   lib_modifier     = d
+  GenerateDebugInformation = true
 }
 
 Memcheck Release {
