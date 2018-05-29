@@ -5,7 +5,7 @@ conditional_include "common"
 conditional_include "windowscommon"
 
 configurations     = Debug Release
-common_defines     = WIN32 _CONSOLE _CRT_NONSTDC_NO_WARNINGS
+common_defines     = WIN32 _CONSOLE _CRT_NONSTDC_NO_WARNINGS NDEBUG
 ConfigurationType  = 1
 SubSystem          = Console
 MinimalRebuild     = false

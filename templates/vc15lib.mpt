@@ -6,34 +6,37 @@ conditional_include "windowscommon"
 
 configurations     = Debug Release
 common_defines     = WIN32 _WINDOWS _CRT_NONSTDC_NO_WARNINGS NDEBUG
-ConfigurationType  = 2
+ConfigurationType  = 4
 MinimalRebuild     = false
-GenerateDebugInformation = true
 
-conditional_include "vc10platforms"
+conditional_include "vc15platforms"
 
 Release {
   optimize         = MaxSpeed
   defines          = NDEBUG
-  output_dir       = Release
-  intermediate_dir = Release
+  output_dir       = Static_Release
+  intermediate_dir = Static_Release
+  lib_modifier     = s
   EnableIntrinsicFunctions = true
   WholeProgramOptimization = true
+  GenerateDebugInformation = true
 }
 
 Debug {
   debug_prj        = 1
   defines          = _DEBUG
-  output_dir       = .
-  intermediate_dir = Debug
-  lib_modifier     = d
+  output_dir       = Static_Debug
+  intermediate_dir = Static_Debug
+  lib_modifier     = sd
+  GenerateDebugInformation = true
 }
 
 Memcheck Release {
   optimize           = MaxSpeed
   defines            = NDEBUG
-  output_dir         = Release
-  intermediate_dir   = Release
+  output_dir         = Static_Release
+  intermediate_dir   = Static_Release
+  lib_modifier       = s
   BasicRuntimeChecks = 0
   FixedBaseAddress   = 1
   EnableIntrinsicFunctions = true
@@ -43,9 +46,9 @@ Memcheck Release {
 Memcheck Debug {
   debug_prj          = 1
   defines            = _DEBUG
-  output_dir         = .
-  intermediate_dir   = Debug
-  lib_modifier       = d
+  output_dir         = Static_Debug
+  intermediate_dir   = Static_Debug
+  lib_modifier       = sd
   BasicRuntimeChecks = 0
   LinkIncremental    = 1
   FixedBaseAddress   = 1
@@ -54,9 +57,9 @@ Memcheck Debug {
 MFC Release {
   optimize         = MaxSpeed
   defines          = NDEBUG
-  output_dir       = MFC_Release
-  intermediate_dir = MFC_Release
-  lib_modifier     = mfc
+  output_dir       = Static_MFC_Release
+  intermediate_dir = Static_MFC_Release
+  lib_modifier     = mfcs
   UseOfMFC         = Dynamic
   EnableIntrinsicFunctions = true
   WholeProgramOptimization = true
@@ -65,11 +68,11 @@ MFC Release {
 MFC Debug {
   debug_prj        = 1
   defines          = _DEBUG
-  output_dir       = MFC_Debug
-  intermediate_dir = MFC_Debug
-  lib_modifier     = mfcd
+  output_dir       = Static_MFC_Debug
+  intermediate_dir = Static_MFC_Debug
+  lib_modifier     = mfcsd
   UseOfMFC         = Dynamic
 }
 
 conditional_include "vcpartialmacros"
-conditional_include "user_vc10dll"
+conditional_include "user_vc10lib"
