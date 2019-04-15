@@ -1,4 +1,4 @@
-package VC15WorkspaceCreator;
+package VC16WorkspaceCreator;
 
 # ************************************************************
 # Description   : A VC16 Workspace Creator

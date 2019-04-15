@@ -1,4 +1,4 @@
-package VC15ProjectCreator;
+package VC16ProjectCreator;
 
 # ************************************************************
 # Description   : A VC15 Project Creator
